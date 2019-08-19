@@ -2,15 +2,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-bool _isFavorited = true;
-int _favoriteCount = 41;
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -78,11 +70,7 @@ Widget titleScreen = Container(
           ],
         ),
       ),
-      Icon(
-        Icons.star,
-        color: Colors.red[500],
-      ),
-      Text('41'),
+      FavoriteWidget(),
     ],
   ),
 );
@@ -112,3 +100,46 @@ Widget textSection = Container(
     ),
   ),
 );
+
+class FavoriteWidget extends StatefulWidget {
+  @override
+  _FavoriteWidgetState createState() => _FavoriteWidgetState();
+}
+
+class _FavoriteWidgetState extends State<FavoriteWidget> {
+  bool _isFavorited = true;
+  int _favoriteCount = 41;
+
+  void _toggleFavorite() {
+    setState(() {
+      if (_isFavorited) {
+        _favoriteCount -= 1;
+        _isFavorited = false;
+      } else {
+        _favoriteCount += 1;
+        _isFavorited = true;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          child: IconButton(
+            icon: _isFavorited ? Icon(Icons.star) : Icon(Icons.star_border),
+            onPressed: _toggleFavorite,
+            color: Colors.red[500],
+          ),
+        ),
+        SizedBox(
+          width: 18,
+          child: Container(
+            child: Text("$_favoriteCount"),
+          ),
+        )
+      ],
+    );
+  }
+}
